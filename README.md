@@ -8,7 +8,7 @@
 It's inspired by projects such as Symfony's [symfony-route-usage](https://github.com/migrify/symfony-route-usage), Laravel's [route-usage](https://github.com/julienbourdeau/route-usage/) and Rails's [traceroute](https://github.com/amatsuda/traceroute).
  
 It differs from them by being less opinionated and having no dependencies, thanks to SOLID and decoupled design.
-Framework integrations come as optional bridges, currently shipping with bridge compatible with Symfony 3/4/5.
+Framework integrations come as optional bridges, currently shipping with bridge compatible with Symfony 5/6/7.
 
 ## Install
 
