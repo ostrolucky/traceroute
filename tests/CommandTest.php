@@ -7,18 +7,19 @@ namespace Ostrolucky\TraceRoute\Tests;
 use Doctrine\ORM\EntityManagerInterface;
 use Ostrolucky\TraceRoute\Model\RouteVisit;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CommandTest extends AbstractTestCase
+class CommandTest extends KernelTestCase
 {
     public function testListsInactiveRoutes(): void
     {
-        $kernel = $this->bootKernel();
+        $kernel = self::createKernel();
 
         $commandTester = new CommandTester((new Application($kernel))->find('ostrolucky:unused-routes'));
         $commandTester->execute([]);
 
-        $this->assertSame("ostrolucky_traceroute_tests_fixtures_test_index\nfoo\n", $commandTester->getDisplay());
+        $this->assertSame("home\nfoo\n", $commandTester->getDisplay());
 
         /** @var EntityManagerInterface $em */
         $em = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -28,6 +29,6 @@ class CommandTest extends AbstractTestCase
 
         $commandTester->execute([]);
 
-        $this->assertSame("ostrolucky_traceroute_tests_fixtures_test_index\n", $commandTester->getDisplay());
+        $this->assertSame("home\n", $commandTester->getDisplay());
     }
 }

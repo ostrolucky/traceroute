@@ -6,17 +6,17 @@ namespace Ostrolucky\TraceRoute\Tests;
 
 use Ostrolucky\TraceRoute\Model\RouteVisit;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ControllerTest extends AbstractTestCase
+class ControllerTest extends WebTestCase
 {
     public function testRouteVisitsAreRecorded(): void
     {
-        $container = $this->bootKernel()->getContainer();
-        $em = $container->get('doctrine.orm.default_entity_manager');
-
-        /** @var KernelBrowser $client */
-        $client = $container->get('test.client');
+        $client = self::createClient();
         $client->disableReboot();
+
+        $container = self::getContainer();
+        $em = $container->get('doctrine.orm.default_entity_manager');
 
         $this->assertCount(0, $em->getRepository(RouteVisit::class)->findAll());
 
@@ -24,7 +24,7 @@ class ControllerTest extends AbstractTestCase
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $routeVisits = $em->getRepository(RouteVisit::class)->findAll();
         $this->assertCount(1, $routeVisits);
-        $this->assertSame('ostrolucky_traceroute_tests_fixtures_test_index', $routeVisits[0]->getRoute());
+        $this->assertSame('home', $routeVisits[0]->getRoute());
         $this->assertSame('Ostrolucky\TraceRoute\Tests\Fixtures\Controller\TestController::indexAction', $routeVisits[0]->getController());
         $this->assertSame(1, $routeVisits[0]->getVisitCount());
         $date = $routeVisits[0]->getLastUpdatedAt();
@@ -34,7 +34,7 @@ class ControllerTest extends AbstractTestCase
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $routeVisits = $em->getRepository(RouteVisit::class)->findAll();
         $this->assertCount(1, $routeVisits);
-        $this->assertSame('ostrolucky_traceroute_tests_fixtures_test_index', $routeVisits[0]->getRoute());
+        $this->assertSame('home', $routeVisits[0]->getRoute());
         $this->assertSame('Ostrolucky\TraceRoute\Tests\Fixtures\Controller\TestController::indexAction', $routeVisits[0]->getController());
         $this->assertSame(2, $routeVisits[0]->getVisitCount());
         $this->assertGreaterThan($date, $routeVisits[0]->getLastUpdatedAt());

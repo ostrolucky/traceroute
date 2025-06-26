@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Ostrolucky\TraceRoute\Command;
 
 use Ostrolucky\TraceRoute\Command\UnusedRouteCollector\AbstractUnusedRouteCollector;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand('ostrolucky:unused-routes')]
 final class ShowUnusedRoutesCommand extends Command
 {
-    protected static $defaultName = 'ostrolucky:unused-routes';
     private $unusedRouteCollector;
 
     public function __construct(AbstractUnusedRouteCollector $unusedRouteCollector)
